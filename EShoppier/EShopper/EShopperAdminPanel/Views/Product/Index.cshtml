@@ -1,0 +1,319 @@
+﻿@model IEnumerable<EShopperAdminPanel.Models.ProductModel>
+@{
+}
+
+<style>
+    .toggler-wrapper {
+        display: block;
+        width: 45px;
+        height: 25px;
+        cursor: pointer;
+        position: relative;
+    }
+
+        .toggler-wrapper input[type="checkbox"] {
+            display: none;
+        }
+
+            .toggler-wrapper input[type="checkbox"]:checked + .toggler-slider {
+                background-color: #44cc66;
+            }
+
+        .toggler-wrapper .toggler-slider {
+            background-color: #ccc;
+            position: absolute;
+            border-radius: 100px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            -webkit-transition: all 300ms ease;
+            transition: all 300ms ease;
+        }
+
+        .toggler-wrapper .toggler-knob {
+            position: absolute;
+            -webkit-transition: all 300ms ease;
+            transition: all 300ms ease;
+        }
+
+    .toggler-wrapper.style-1 input[type="checkbox"]:checked + .toggler-slider .toggler-knob {
+        left: calc(100% - 19px - 3px);
+    }
+
+    .toggler-wrapper.style-1 .toggler-knob {
+        width: calc(25px - 6px);
+        height: calc(25px - 6px);
+        border-radius: 50%;
+        left: 3px;
+        top: 3px;
+        background-color: #fff;
+    }
+</style>
+
+<h2>Ürünler</h2>
+<br />
+<button type="button" class="btn btn-success" data-bs-toggle="modal" onclick="getCategories()" data-bs-target="#createModal">Yeni Ürün Ekle</button>
+<table class="table table-hover mt-3">
+    <thead>
+        <tr>
+            <th class="d-none">Id</th>
+            <th>Ürün Adı</th>
+            <th>Kategori</th>
+            <th>Satış Durumu</th>
+            <th>Fiyat</th>
+            <th>Stok Adedi</th>
+        </tr>
+    </thead>
+    <tbody id="productTableBody" class="table-border-bottom-0">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="d-none">@item.Id</td>
+                <td>@item.Name</td>
+                <td>@item.Category.Name</td>
+                <td>@item.IsApproved</td>
+                <td>@item.Price</td>
+                <td>@item.Stock</td>
+                <td>
+                    <div class="dropdown">
+                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                            <i class="bx bx-dots-vertical-rounded"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a onclick="getProductById(@item.Id)" data-bs-toggle="modal" data-bs-target="#updateModal" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                            <a onclick="deleteProduct(@item.Id)" class="dropdown-item"><i class="bx bx-trash me-1"></i> Delete</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateModalLabel">Kategori</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3 d-none">
+                        <label for="recipient-name" class="col-form-label">ID:</label>
+                        <input type="text" class="form-control" id="id">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Kategori Adı:</label>
+                        <input type="text" class="form-control" id="upProductName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Açıklama:</label>
+                        <textarea class="form-control" id="upDesc"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                <button onclick="updateProduct()" type="button" class="btn btn-primary">Güncelle</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createModalLabel">Ürün</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Kategori Adı</label>
+                        <input type="text" class="form-control" id="productName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Açıklama</label>
+                        <textarea class="form-control" id="desc"></textarea>
+                    </div>
+                    <div class="input-group mb-3">
+                        <label for="message-text" class="col-form-label">Fiyat</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">₺</span>
+                            <input type="number" id="price" class="form-control" aria-label="Amount (to the nearest dollar)">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Stok Adedi</label>
+                        <input type="number" class="form-control" id="stock" oninput="this.value = Math.round(this.value);">
+                    </div>
+                    <div class="input-group mb-3">
+                        <label for="recipient-name" class="col-form-label">Satış Durumu</label>
+                        <label class="m-1 ms-3 toggler-wrapper style-1">
+                            <input id="isApproved" type="checkbox">
+                            <div class="toggler-slider">
+                                <div class="toggler-knob"></div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Fotoğraf</label>
+                        <input type="file" class="form-control" id="productPhoto" aria-describedby="inputGroupFileAddon03" aria-label="Upload" accept="image/*">
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Kategori Adı</label>
+                        <select class="form-select" id="category">
+                            
+                        </select>
+                    </div>
+
+                    
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                <button onclick="createProduct()" type="button" class="btn btn-primary">Ekle</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function createProduct() {
+        debugger;
+        var doc = $("#productPhoto");
+        var productName = $("#productName").val();
+        var desc = $("#desc").val();
+        var price = parseFloat($("#price").val());
+        var stock = parseInt($("#stock").val());
+        var isApproved = $('#isApproved').is(":checked");
+        var productPhoto = doc[0].files[0];
+        var category = parseInt($("#category").val());
+
+        var formData = new FormData();
+        formData.append("_name", productName);
+        formData.append("_desc", desc);
+        formData.append("_price", price);
+        formData.append("_stock", stock);
+        formData.append("_isApproved", isApproved);
+        formData.append("_photo", productPhoto);
+        formData.append("_categoryId", category);
+
+        $.ajax({
+            url: '@Url.Action("CreateProduct", "Product")',
+            type: 'POST',
+            dataType: 'json',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                if (data) {
+                    $(function () {
+                        $('#createModal').modal('toggle');
+                    });
+                    Swal.fire({
+                        title: "Başarılı!",
+                        text: "Ürün başarıyla eklendi.",
+                        icon: "success"
+                    });
+                    //updateTable();
+                }
+                else {
+                    $(function () {
+                        $('#createModal').modal('toggle');
+                    });
+                    Swal.fire({
+                        title: "Hata!",
+                        text: "Bir şeyler ters gitti lütfen tekrar deneyiniz!",
+                        icon: "error"
+                    });
+
+                    return;
+                }
+            }
+        });
+    }
+
+    function getCategories() {
+
+        $.ajax({
+            url: '@Url.Action("GetCategories", "Product")',
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                if (data) {
+                    $("#category").empty();
+                    var trHtml = "";
+                    for (var item of data) {
+                        trHtml += '<option value="'+ item.id +'">'+ item.name +'</option>';
+                    }
+                    $("#category").append(trHtml);
+                }
+                else {
+                    
+                    Swal.fire({
+                        title: "Hata!",
+                        text: "Bir şeyler ters gitti lütfen tekrar deneyiniz!",
+                        icon: "error"
+                    });
+
+                    return;
+                }
+            }
+        });
+    }
+
+    function updateTable() {
+        $.ajax({
+            url: '@Url.Action("UpdateTable", "Product")',
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                if (data) {
+                    $("#productTableBody").empty();
+                    var trHtml = "";
+                    for (var item of data) {
+                        trHtml += '<tr>';
+                        trHtml += '    <td class="d-none"> ' + item.Id + '</td>';
+                        trHtml += '        <td> ' + item.name + '</td>'
+                        trHtml += '        <td> ' + item.category.name + '</td>'
+                        trHtml += '        <td> ' + item.isApproved + '</td>'
+                        trHtml += '        <td> ' + item.price + '</td>'
+                        trHtml += '        <td> ' + item.stock + '</td>'
+                        trHtml += '        <div class="dropdown" >'
+                        trHtml += '            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">'
+                        trHtml += '                <i class="bx bx-dots-vertical-rounded" > </i>'
+                        trHtml += '            </button>'
+                        trHtml += '            <div class="dropdown-menu">'
+                        trHtml += '                 <a onclick="getProductById(' + item.id + ')" data-bs-toggle="modal" data-bs-target="#updateModal" class="dropdown-item" > <i class="bx bx-edit-alt me-1"> </i>Edit</a>'
+                        trHtml += '                 <a onclick="deleteProduct(' + item.id + ')" class="dropdown-item" > <i class="bx bx-trash me-1" > </i> Delete</a>'
+                        trHtml += '            </div>'
+                        trHtml += '        </div>'
+                        trHtml += '     </td>'
+                        trHtml += '</tr>';
+                    }
+                    $("#productTableBody").append(trHtml);
+                }
+                else {
+                    Swal.fire({
+                        title: "Hata!",
+                        text: "Tablo yüklenirken bir şeyler ters gitti lütfen tekrar deneyiniz!",
+                        icon: "error"
+                    });
+
+                    return;
+                }
+            }
+        });
+    }
+
+</script>
