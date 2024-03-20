@@ -116,6 +116,7 @@ namespace EShopperAdminPanel.Controllers
                 product.Description = _desc;
 
                 //test code block
+                //test code block 2
                 product.Price = priceD;
                 product.IsApproved = _isApproved;
                 product.Stock = _stock;
