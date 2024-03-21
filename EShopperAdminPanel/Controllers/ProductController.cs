@@ -7,6 +7,7 @@ using EShopperAdminPanel.Models;
 using System.Linq;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using System.Globalization;
 
 namespace EShopperAdminPanel.Controllers
 {
@@ -100,7 +101,7 @@ namespace EShopperAdminPanel.Controllers
         {
             try
             {
-                double priceD = Convert.ToDouble(_price);
+                double priceD = double.Parse(_price, CultureInfo.InvariantCulture);
                 var product = new Product();
                 if (_photo != null)
                 {
