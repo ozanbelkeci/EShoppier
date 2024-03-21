@@ -142,3 +142,4 @@ _NCrunch*
 .vs/VSWorkspaceState.json
 .vs/EShopper/FileContentIndex/8bf032ad-5e45-4fd1-9663-76bf0862d7ce.vsidx
 .vs/EShopper/config/applicationhost.config
+*.v2
