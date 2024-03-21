@@ -53,7 +53,7 @@
 
 <h2>Ürünler</h2>
 <br />
-<button type="button" class="btn btn-success" data-bs-toggle="modal" onclick="getCategories()" data-bs-target="#createModal">Yeni Ürün Ekle</button>
+<button type="button" class="btn btn-success" data-bs-toggle="modal" onclick="getCategories(1)" data-bs-target="#createModal">Yeni Ürün Ekle</button>
 <table class="table table-hover mt-3">
     <thead>
         <tr>
@@ -72,7 +72,14 @@
                 <td class="d-none">@item.Id</td>
                 <td>@item.Name</td>
                 <td>@item.Category.Name</td>
-                <td>@item.IsApproved</td>
+                @if (item.IsApproved)
+                {
+                    <td><span class="badge rounded-pill bg-success">Satışta</span></td>
+                }
+                else
+                {
+                    <td><span class="badge rounded-pill bg-danger">Satışta Değil</span></td>
+                }
                 <td>@item.Price</td>
                 <td>@item.Stock</td>
                 <td>
@@ -96,13 +103,14 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="updateModalLabel">Kategori</h5>
+                <h5 class="modal-title" id="updateModalLabel">Ürün</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <img src="" id="upPhoto" class="rounded mx-auto d-block" alt="" width="200" height="200">
                 <form>
                     <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Kategori Adı</label>
+                        <label for="recipient-name" class="col-form-label">Ürün Adı</label>
                         <input type="text" class="form-control" id="upProductName">
                     </div>
                     <div class="mb-3">
@@ -164,7 +172,7 @@
                         <input type="text" class="form-control" id="id">
                     </div>
                     <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Kategori Adı</label>
+                        <label for="recipient-name" class="col-form-label">Ürün Adı</label>
                         <input type="text" class="form-control" id="productName">
                     </div>
                     <div class="mb-3">
@@ -268,7 +276,7 @@
         });
     }
 
-    function getCategories() {
+    function getCategories(val, categoryId = null) {
 
         $.ajax({
             url: '@Url.Action("GetCategories", "Product")',
@@ -276,12 +284,26 @@
             dataType: 'json',
             success: function (data) {
                 if (data) {
-                    $("#category").empty();
-                    var trHtml = "";
-                    for (var item of data) {
-                        trHtml += '<option value="'+ item.id +'">'+ item.name +'</option>';
+                    if(val === 1) {
+                        $("#category").empty();
+                        var trHtml = "";
+                        for (var item of data) {
+                            trHtml += '<option value="'+ item.id +'">'+ item.name +'</option>';
+                        }
+                        $("#category").append(trHtml);
                     }
-                    $("#category").append(trHtml);
+                    if(val === 2 && categoryId !== null) {
+                        $("#upCategory").empty();
+                        var trHtml = "";
+                        for (var item of data) {
+                            if (item.id === categoryId)
+                                trHtml += '<option selected value="' + item.id + '">' + item.name + '</option>';
+                            else
+                                trHtml += '<option value="' + item.id + '">' + item.name + '</option>';
+
+                        }
+                        $("#upCategory").append(trHtml);
+                    }
                 }
                 else {
                     
@@ -311,7 +333,11 @@
                         trHtml += '    <td class="d-none"> ' + item.Id + '</td>';
                         trHtml += '        <td> ' + item.name + '</td>'
                         trHtml += '        <td> ' + item.category.name + '</td>'
-                        trHtml += '        <td> ' + item.isApproved + '</td>'
+                        if(item.isApproved === true)
+                            trHtml += '<td><span class="badge rounded-pill bg-success">Satışta</span></td>'
+                        else
+                            trHtml += '<td><span class="badge rounded-pill bg-danger">Satışta Değil</span></td>'
+                        //trHtml += '        <td> ' + item.isApproved + '</td>'
                         trHtml += '        <td> ' + item.price + '</td>'
                         trHtml += '        <td> ' + item.stock + '</td>'
                         trHtml += '        <td>'
@@ -400,18 +426,79 @@
             success: function (data) {
                 if (data) {
                     console.log(data);
-                    // $("#id").val(data.id);
-                    // $("#upCategoryName").val(data.name);
-                    // $("#upDesc").val(data.description);
-                    // $("#upPrice").val(data.price);
-                    // $("#upStock").val(data.stock);
-                    // $("#upIsApproved").val(data.isApproved);
-                    // $("#upCategory").val(data.category.name);
+                    $("#upPhoto").attr("src", "/productPhotos/" + data.photo);
+                    $("#id").val(data.id);
+                    $("#upProductName").val(data.name);
+                    $("#upDesc").val(data.description);
+                    $("#upPrice").val(data.price);
+                    $("#upStock").val(data.stock);
+                    if(data.isApproved)
+                        $("#upIsApproved").prop("checked", true);
+                    else
+                        $("#upIsApproved").prop("checked", false);
+                    getCategories(2, data.categoryId);
 
                 }
                 else {
                     $(function () {
                         $('#modal').modal('toggle');
+                    });
+                    Swal.fire({
+                        title: "Hata!",
+                        text: "Bir şeyler ters gitti lütfen tekrar deneyiniz!",
+                        icon: "error"
+                    });
+
+                    return;
+                }
+            }
+        });
+    }
+
+    function updateProduct() {
+        var doc = $("#upProductPhoto");
+
+        var id = $("#id").val();
+        var productName = $("#upProductName").val();
+        var desc = $("#upDesc").val();
+        var price = $("#upPrice").val();
+        var stock = $("#upStock").val();
+        var isApproved = $("#upIsApproved").is(":checked");
+        var productPhoto = doc[0].files[0];
+        var category = parseInt($("#upCategory").val());
+
+        var formData = new FormData();
+        formData.append("_id", id);
+        formData.append("_name", productName);
+        formData.append("_desc", desc);
+        formData.append("_price", price);
+        formData.append("_stock", stock);
+        formData.append("_isApproved", isApproved);
+        formData.append("_photo", productPhoto);
+        formData.append("_categoryId", category);
+
+        $.ajax({
+            url: '@Url.Action("UpdateProduct", "Product")',
+            type: 'POST',
+            dataType: 'json',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                if (data) {
+                    $(function () {
+                        $('#updateModal').modal('toggle');
+                    });
+                    Swal.fire({
+                        title: "Başarılı!",
+                        text: "Ürün başarıyla güncellendi.",
+                        icon: "success"
+                    });
+                    updateTable();
+                }
+                else {
+                    $(function () {
+                        $('#updateModal').modal('toggle');
                     });
                     Swal.fire({
                         title: "Hata!",
