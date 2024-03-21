@@ -6704,19 +6704,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\obelkeci\\.nuget\\packages\\": {}
+    "C:\\Users\\aduz\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\obelkeci\\Documents\\GitHub\\EShoppier\\EShoppier\\EShopper\\EShopperMVC\\EShopperMVC.csproj",
+      "projectUniqueName": "C:\\Users\\aduz\\Documents\\GitHub\\EShoppier\\EShoppier\\EShopper\\EShopperMVC\\EShopperMVC.csproj",
       "projectName": "EShopperMVC",
-      "projectPath": "C:\\Users\\obelkeci\\Documents\\GitHub\\EShoppier\\EShoppier\\EShopper\\EShopperMVC\\EShopperMVC.csproj",
-      "packagesPath": "C:\\Users\\obelkeci\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\obelkeci\\Documents\\GitHub\\EShoppier\\EShoppier\\EShopper\\EShopperMVC\\obj\\",
+      "projectPath": "C:\\Users\\aduz\\Documents\\GitHub\\EShoppier\\EShoppier\\EShopper\\EShopperMVC\\EShopperMVC.csproj",
+      "packagesPath": "C:\\Users\\aduz\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\aduz\\Documents\\GitHub\\EShoppier\\EShoppier\\EShopper\\EShopperMVC\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\obelkeci\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\aduz\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -6730,8 +6730,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\obelkeci\\Documents\\GitHub\\EShoppier\\EShoppier\\EShopper\\DAL\\DAL.csproj": {
-              "projectPath": "C:\\Users\\obelkeci\\Documents\\GitHub\\EShoppier\\EShoppier\\EShopper\\DAL\\DAL.csproj"
+            "C:\\Users\\aduz\\Documents\\GitHub\\EShoppier\\EShoppier\\EShopper\\DAL\\DAL.csproj": {
+              "projectPath": "C:\\Users\\aduz\\Documents\\GitHub\\EShoppier\\EShoppier\\EShopper\\DAL\\DAL.csproj"
             }
           }
         }
@@ -6794,7 +6794,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
       }
     }
   },

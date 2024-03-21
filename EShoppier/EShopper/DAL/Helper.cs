@@ -10,7 +10,8 @@ namespace DAL
     {
         public static string GetConnectionString()
         {
-            return "Server=localhost\\SQLEXPRESS;Database=EShoppier;Trusted_Connection=True;";
+            //return "Data Source=(localdb)\\Anil;Initial Catalog=EShoppier;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+            return "Server=(localdb)\\Anil;Database=EShoppier;Trusted_Connection=True;";
         }
     }
 }
