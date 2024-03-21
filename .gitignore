@@ -143,3 +143,4 @@ _NCrunch*
 .vs/EShopper/config/applicationhost.config
 *.v2
 /.vs/EShopper/config/applicationhost.config
+*.lock
