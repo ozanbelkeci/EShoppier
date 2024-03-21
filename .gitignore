@@ -135,7 +135,6 @@ _NCrunch*
 /DAL/Helper.cs
 .vs/EShoppier/v17/.wsuo
 *.vsidx
-*.sqlite
 *.config
 *.vsidx
 .vs/EShopper/config/applicationhost.config
