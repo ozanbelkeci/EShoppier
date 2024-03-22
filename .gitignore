@@ -143,3 +143,6 @@ _NCrunch*
 .vs/EShopper/config/applicationhost.config
 *.v2
 /.vs/EShopper/config/applicationhost.config
+/.vs/EShopper/v17/.futdcache.v2
+/.vs/ProjectEvaluation/eshopper.metadata.v7.bin
+/.vs/ProjectEvaluation/eshopper.projects.v7.bin
