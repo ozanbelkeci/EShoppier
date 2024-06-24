@@ -1,4 +1,6 @@
-﻿using EShopperMVC.Models;
+﻿using DAL.Entity;
+using DAL.Operations;
+using EShopperMVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -32,7 +34,23 @@ namespace EShopperMVC.Controllers
         {
             return View();
         }
+        public JsonResult Categories()
+        {
+
+            GenericRepository<Category> repository = new GenericRepository<Category>();
+
+            var categories = repository.GetList();
+
+            List<CategoryModel> categoryModel = categories.Select(i => new CategoryModel()
+            {
+                Id = i.Id,
+                Name = i.Name,
+                Description = i.Description
+            }
+            ).ToList();
 
 
+            return Json(categoryModel);
+        }
     }
 }
