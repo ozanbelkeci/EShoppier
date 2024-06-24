@@ -8,5 +8,7 @@ namespace EShopperAdminPanel.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public List<ProductModel> Products { get; set; }
+        public int MainCategoryId { get; set; }
+
     }
 }
