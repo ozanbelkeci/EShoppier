@@ -7,6 +7,7 @@ using EShopperAdminPanel.Models;
 using System.Linq;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using System.Globalization;
 
 namespace EShopperAdminPanel.Controllers
 {
@@ -100,7 +101,7 @@ namespace EShopperAdminPanel.Controllers
         {
             try
             {
-                double priceD = Convert.ToDouble(_price);
+                double priceD = double.Parse(_price, CultureInfo.InvariantCulture);
                 var product = new Product();
                 if (_photo != null)
                 {
@@ -114,11 +115,6 @@ namespace EShopperAdminPanel.Controllers
 
                 product.Name = _name;
                 product.Description = _desc;
-
-                //test code block
-                //test code block 2s
-                //test code block 3
-                // test code block 4
                 product.Price = priceD;
                 product.IsApproved = _isApproved;
                 product.Stock = _stock;
@@ -132,6 +128,11 @@ namespace EShopperAdminPanel.Controllers
                     Id = result.Id,
                     Name = result.Name,
                     Description = result.Description,
+                    Price = result.Price,
+                    CategoryId= _categoryId,
+                    IsApproved= result.IsApproved,
+                    Photo= result.Photo,
+                    Stock= result.Stock,
                 };
 
                 return Json(productModel);
@@ -142,14 +143,29 @@ namespace EShopperAdminPanel.Controllers
             }
         }
 
-        public JsonResult UpdateProduct(int _id, string _productName, string _desc)
+        public JsonResult UpdateProduct(int _id, string _name, string _desc, string _price, int _stock, bool _isApproved, IFormFile _photo, int _categoryId)
         {
             try
             {
+                double priceD = double.Parse(_price, CultureInfo.InvariantCulture);
                 var product = new Product();
-                product.Id = _id;
-                product.Name = _productName;
+                if (_photo != null)
+                {
+                    var extension = Path.GetExtension(_photo.FileName);
+                    var newImageName = Guid.NewGuid() + extension;
+                    var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/productPhotos/", newImageName);
+                    var stream = new FileStream(location, FileMode.Create);
+                    _photo.CopyTo(stream);
+                    product.Photo = newImageName;
+                }
+
+                product.Id= _id;
+                product.Name = _name;
                 product.Description = _desc;
+                product.Price = priceD;
+                product.IsApproved = _isApproved;
+                product.Stock = _stock;
+                product.CategoryId = _categoryId;
 
                 GenericRepository<Product> repository = new GenericRepository<Product>();
                 var result = repository.Update(product);
@@ -159,8 +175,12 @@ namespace EShopperAdminPanel.Controllers
                     Id = result.Id,
                     Name = result.Name,
                     Description = result.Description,
+                    Price = result.Price,
+                    CategoryId = _categoryId,
+                    IsApproved = result.IsApproved,
+                    Photo = result.Photo,
+                    Stock = result.Stock,
                 };
-
 
                 return Json(productModel);
             }

@@ -142,3 +142,9 @@ _NCrunch*
 .vs/EShopper/FileContentIndex/8bf032ad-5e45-4fd1-9663-76bf0862d7ce.vsidx
 .vs/EShopper/config/applicationhost.config
 *.v2
+/.vs/EShopper/config/applicationhost.config
+*.lock
+/.vs/EShopper/v17/.futdcache.v2
+/.vs/ProjectEvaluation/eshopper.metadata.v7.bin
+/.vs/ProjectEvaluation/eshopper.projects.v7.bin
+.vs/EShopper/v17/DocumentLayout.json
