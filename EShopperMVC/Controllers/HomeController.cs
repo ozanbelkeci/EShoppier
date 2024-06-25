@@ -56,7 +56,7 @@ namespace EShopperMVC.Controllers
         {
             //string returnUrl = "/Index";
             //return RedirectToAction("Index", "CategoryOp");
-            return RedirectToAction("CategoryOp");
+            return RedirectToAction("Category");
         }
     }
 }
