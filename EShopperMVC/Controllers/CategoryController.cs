@@ -1,16 +1,50 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DAL.Entity;
+using DAL.Models;
+using DAL.Operations;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace EShopperMVC.Controllers
 {
     public class CategoryController : Controller
     {
         // GET: CategoryOp
-        public ActionResult Index()
+
+        public ActionResult Index(int _categoryId)
         {
             return View();
         }
 
+        public async Task<JsonResult> Products(int _categoryId)
+        {
+            GenericRepository<Product> repository = new GenericRepository<Product>();
+
+            var AllProducts = repository.GetList();
+
+            List<ProductModel> productModel = AllProducts.Select(i => new ProductModel()
+            {
+                Id = i.Id,
+                Name = i.Name,
+                Description = i.Description
+            }
+            ).ToList();
+
+            var products = productModel.Where(x => x.CategoryId == _categoryId).Select(i => new ProductModel()
+            {
+                Id = i.Id,
+                Name = i.Name,
+                Description = i.Description,
+                Price = i.Price,
+                Stock = i.Stock,
+                IsApproved = i.IsApproved,
+                CategoryId = i.CategoryId
+            });
+
+            return Json(products);
+        }
         // GET: CategoryOp/Details/5
         public ActionResult Details(int id)
         {
@@ -79,10 +113,29 @@ namespace EShopperMVC.Controllers
                 return View();
             }
         }
-        public JsonResult CategoryFind()
+        public JsonResult CategoryFind(string categoryTitle)
         {
+            GenericRepository<Category> repository = new GenericRepository<Category>();
+
+            var categories = repository.GetList();
+
+            List<CategoryModel> categoryModel = categories.Select(i => new CategoryModel()
+            {
+                Id = i.Id,
+                Name = i.Name,
+                Description = i.Description
+            }
+            ).ToList();
+
+            var categoryInfos = categoryModel.Where(x => x.Name == categoryTitle).Select(i => new CategoryModel()
+            {
+                Id = i.Id,
+                Name = i.Name,
+                Description = i.Description
+            });
+            
             //string returnUrl = "/Index";
-            return Json(new { redirectToUrl = Url.Action("Index", "CategoryOp") });
+            return Json(new { redirectToUrl = Url.Action("Index", "Category"), categoryInfos });
         }
     }
 }

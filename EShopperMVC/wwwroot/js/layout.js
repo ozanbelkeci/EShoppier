@@ -1,10 +1,10 @@
 ﻿var navbarCategory = $("#navbar-cat");
 
 $.ajax({
-    url: 'Home/Categories',
+/*    url: 'Home/Categories',*/
+    url: "../../Home/Categories",
     type: 'POST',
     dataType: 'json',
-    async: false,
     success: function (data) {
         if (data) {
             console.log(data);
@@ -30,7 +30,7 @@ $.ajax({
                         data: {categoryTitle :categoryTitle },
                         success: function (result) {
                             if (result.redirectToUrl !== undefined) {
-                                window.location.replace(result.redirectToUrl);
+                                window.location.replace(result.redirectToUrl + "/Index" + "?_categoryId=" + result.categoryInfos[0].id);
                             } else {
                                 // No redirect found, do something else
                             }
