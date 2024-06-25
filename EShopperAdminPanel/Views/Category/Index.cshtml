@@ -26,8 +26,8 @@
                             <i class="bx bx-dots-vertical-rounded"></i>
                         </button>
                         <div class="dropdown-menu">
-                            <a onclick="getCategoryById(@item.Id)" data-bs-toggle="modal" data-bs-target="#updateModal" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                            <a onclick="deleteCategory(@item.Id)" class="dropdown-item"><i class="bx bx-trash me-1"></i> Delete</a>
+                            <a onclick="getCategoryById(@item.Id)" data-bs-toggle="modal" data-bs-target="#updateModal" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Güncelle</a>
+                            <a onclick="deleteCategory(@item.Id)" class="dropdown-item"><i class="bx bx-trash me-1"></i> Sil</a>
                         </div>
                     </div>
                 </td>
@@ -89,6 +89,26 @@
                         <label for="message-text" class="col-form-label">Açıklama:</label>
                         <textarea class="form-control" id="desc"></textarea>
                     </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Sıralama Numarası:</label>
+                        <input type="number" class="form-control" id="line" oninput="this.value = Math.round(this.value);">
+                    </div>
+                    <div class="input-group mb-3">
+                        <label for="recipient-name" class="col-form-label">Alt Kategori:</label>
+                        <label class="m-1 ms-3 toggler-wrapper style-1">
+                            <input id="subCatCheck" type="checkbox">
+                            <div class="toggler-slider">
+                                <div class="toggler-knob"></div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Sıralama Numarası:</label>
+                        <select class="form-select" aria-label="Default select example">
+                          <option selected>Alt kategori seçiniz</option>
+                          
+                        </select>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -111,9 +131,12 @@
             data: {
                 "_categoryName": categoryName,
                 "_desc": desc
+                // "_mainCategoryId": mainCategoryId,
+                // "_line": line
             },
             success: function (data) {
                 if (data) {
+                    debugger;
                     $(function () {
                         $('#createModal').modal('toggle');
                     });

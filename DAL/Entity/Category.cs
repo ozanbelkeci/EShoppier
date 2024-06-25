@@ -12,5 +12,7 @@ namespace DAL.Entity
         public string Name { get; set; }
         public string Description { get; set; }
         public List<Product> Products { get; set; }
+        public int MainCategoryId { get; set; }
+        public int Line { get; set; }
     }
 }

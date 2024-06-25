@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace EShopperAdminPanel.Controllers
 {
@@ -20,7 +21,8 @@ namespace EShopperAdminPanel.Controllers
             {
                 Id = i.Id,
                 Name = i.Name,
-                Description = i.Description
+                Description = i.Description,
+                Line = i.Line,
             }
             ).ToList();
 
@@ -38,7 +40,8 @@ namespace EShopperAdminPanel.Controllers
             {
                 Id = i.Id,
                 Name = i.Name,
-                Description = i.Description
+                Description = i.Description,
+                Line = i.Line,
             }
             ).ToList();
 
@@ -62,13 +65,15 @@ namespace EShopperAdminPanel.Controllers
             }
         }
 
-        public JsonResult CreateCategory(string _categoryName, string _desc)
+        public JsonResult CreateCategory(string _categoryName, string _desc, int _mainCategoryId,int _line)
         {
             try
             {
                 var category = new Category();
                 category.Name = _categoryName;
                 category.Description = _desc;
+                category.MainCategoryId = _mainCategoryId;
+                category.Line = _line;
 
                 GenericRepository<Category> repository = new GenericRepository<Category>();
                 var result = repository.Create(category);
@@ -78,6 +83,8 @@ namespace EShopperAdminPanel.Controllers
                     Id = result.Id,
                     Name = result.Name,
                     Description = result.Description,
+                    MainCategoryId = result.MainCategoryId,
+                    Line = result.Line
                 };
 
 
@@ -89,7 +96,7 @@ namespace EShopperAdminPanel.Controllers
             }
         }
 
-        public JsonResult UpdateCategory(int _id, string _categoryName, string _desc)
+        public JsonResult UpdateCategory(int _id, string _categoryName, string _desc, int _mainCategoryId, int _line)
         {
             try
             {
@@ -97,6 +104,8 @@ namespace EShopperAdminPanel.Controllers
                 category.Id = _id;
                 category.Name = _categoryName;
                 category.Description = _desc;
+                category.MainCategoryId = _mainCategoryId;
+                category.Line = _line;
 
                 GenericRepository<Category> repository = new GenericRepository<Category>();
                 var result = repository.Update(category);
@@ -106,6 +115,8 @@ namespace EShopperAdminPanel.Controllers
                     Id = result.Id,
                     Name = result.Name,
                     Description = result.Description,
+                    MainCategoryId = result.MainCategoryId,
+                    Line = result.Line
                 };
 
 
@@ -132,5 +143,6 @@ namespace EShopperAdminPanel.Controllers
                 throw ex;
             }
         }
+
     }
 }
