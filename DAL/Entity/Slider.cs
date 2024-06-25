@@ -9,5 +9,6 @@ namespace DAL.Entity
     public class Slider : BaseEntity
     {
         public string Name { get; set; }
+        public string Photo { get; set; }
     }
 }
