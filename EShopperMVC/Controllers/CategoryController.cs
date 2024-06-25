@@ -28,7 +28,11 @@ namespace EShopperMVC.Controllers
             {
                 Id = i.Id,
                 Name = i.Name,
-                Description = i.Description
+                Description = i.Description,
+                Price = i.Price,
+                Stock = i.Stock,
+                IsApproved = i.IsApproved,
+                CategoryId = i.CategoryId
             }
             ).ToList();
 
