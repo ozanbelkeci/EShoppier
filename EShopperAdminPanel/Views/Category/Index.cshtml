@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<EShopperAdminPanel.Models.CategoryModel>
 @{
+    var mainCategories = Model.Where(x => x.MainCategoryId == 0).ToList();
 }
 <h2>Kategoriler</h2>
 <br />
@@ -10,6 +11,8 @@
             <th class="d-none">Id</th>
             <th>Kategori</th>
             <th>Açıklama</th>
+            <th>Ana Kategori</th>
+            <th>Menü Sırası</th>
             <th>İşlemler</th>
         </tr>
     </thead>
@@ -20,6 +23,8 @@
                 <td class="d-none">@item.Id</td>
                 <td>@item.Name</td>
                 <td>@item.Description</td>
+                <td>@item.MainCategoryId</td>
+                <td>@item.Line</td>
                 <td>
                     <div class="dropdown">
                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -60,6 +65,28 @@
                         <label for="message-text" class="col-form-label">Açıklama:</label>
                         <textarea class="form-control" id="upDesc"></textarea>
                     </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Sıralama Numarası:</label>
+                        <input type="number" class="form-control" id="upLine" oninput="this.value = Math.round(this.value);">
+                    </div>
+                    <div class="input-group mb-3">
+                        <label for="recipient-name" class="col-form-label">Alt Kategori:</label>
+                        <label class="m-1 ms-3 toggler-wrapper style-1">
+                            <input id="upSubCatCheck" onchange="subCatCheckToggle()" type="checkbox">
+                            <div class="toggler-slider">
+                                <div class="toggler-knob"></div>
+                            </div>
+                        </label>
+                    </div>
+                    <div id="upChooseMainCat" class="mb-3 d-none">
+                        <select class="form-select" aria-label="Default select example" id="upMainCategoryId">
+                            <option selected>Alt kategori seçiniz</option>
+                            @foreach (var item in mainCategories)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </select>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -96,17 +123,20 @@
                     <div class="input-group mb-3">
                         <label for="recipient-name" class="col-form-label">Alt Kategori:</label>
                         <label class="m-1 ms-3 toggler-wrapper style-1">
-                            <input id="subCatCheck" type="checkbox">
+                            <input id="subCatCheck" onchange="subCatCheckToggle()" type="checkbox">
                             <div class="toggler-slider">
                                 <div class="toggler-knob"></div>
                             </div>
                         </label>
                     </div>
-                    <div class="mb-3">
+                    <div id="chooseMainCat" class="mb-3 d-none">
                         <label for="recipient-name" class="col-form-label">Sıralama Numarası:</label>
-                        <select class="form-select" aria-label="Default select example">
+                        <select class="form-select" aria-label="Default select example" id="mainCategoryId">
                           <option selected>Alt kategori seçiniz</option>
-                          
+                          @foreach (var item in mainCategories)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
                         </select>
                     </div>
                 </form>
@@ -120,9 +150,20 @@
 </div>
 
 <script>
+    function subCatCheckToggle() {
+        if ($("#subCatCheck").is(":checked") == true)
+            $("#chooseMainCat").removeClass("d-none");
+        else
+            $("#chooseMainCat").addClass("d-none");
+    }
+
     function createCategory() {
         var categoryName = $("#categoryName").val();
         var desc = $("#desc").val();
+        var line = parseInt($("#line").val());
+        var mainCategoryId = 0;
+        if ($("#subCatCheck").is(":checked") == true)
+            var mainCategoryId = parseInt($("#mainCategoryId").val());
 
         $.ajax({
             url: '@Url.Action("CreateCategory", "Category")',
@@ -130,9 +171,9 @@
             dataType: 'json',
             data: {
                 "_categoryName": categoryName,
-                "_desc": desc
-                // "_mainCategoryId": mainCategoryId,
-                // "_line": line
+                "_desc": desc,
+                 "_mainCategoryId": mainCategoryId,
+                 "_line": line
             },
             success: function (data) {
                 if (data) {
