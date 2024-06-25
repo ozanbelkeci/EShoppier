@@ -12,11 +12,9 @@ $.ajax({
                 var element = '<a class="nav-item nav-link category">' + item.name + '</a>';
                 navbarCategory.append(element);
             }
-            debugger;
             const my_element = document.getElementsByClassName("category");
             for (row of my_element) {
                 row.addEventListener("click", function (e) {
-                    debugger;
                     console.log(this.text); // logs the className of my_element
                     console.log(this.className); // logs the className of my_element
                     console.log(e.currentTarget === this); // logs `true`
