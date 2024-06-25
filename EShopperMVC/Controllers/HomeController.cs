@@ -52,5 +52,11 @@ namespace EShopperMVC.Controllers
 
             return Json(categoryModel);
         }
+        public ActionResult CategoryFind()
+        {
+            //string returnUrl = "/Index";
+            //return RedirectToAction("Index", "CategoryOp");
+            return RedirectToAction("CategoryOp");
+        }
     }
 }
