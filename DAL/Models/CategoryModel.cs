@@ -13,6 +13,6 @@ namespace DAL.Models
         public string Description { get; set; }
         public List<ProductModel> Products { get; set; }
         public int MainCategoryId { get; set; }
-
+        public int Line { get; set; }
     }
 }
