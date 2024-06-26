@@ -12,5 +12,6 @@ namespace EShopperMVC.Models
         public bool IsApproved { get; set; }
         public CategoryModel Category { get; set; }
         public int CategoryId { get; set; }
+        public string Photo { get; set; }
     }
 }

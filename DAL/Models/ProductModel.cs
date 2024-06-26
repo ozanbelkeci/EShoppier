@@ -14,6 +14,7 @@ namespace DAL.Models
         public double Price { get; set; }
         public int Stock { get; set; }
         public bool IsApproved { get; set; }
+        public string Photo { get; set; }
         public CategoryModel Category { get; set; }
         public int CategoryId { get; set; }
     }
