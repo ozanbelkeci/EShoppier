@@ -32,7 +32,8 @@ namespace EShopperMVC.Controllers
                 Price = i.Price,
                 Stock = i.Stock,
                 IsApproved = i.IsApproved,
-                CategoryId = i.CategoryId
+                CategoryId = i.CategoryId,
+                Photo = i.Photo,
             }
             ).ToList();
 
@@ -44,7 +45,8 @@ namespace EShopperMVC.Controllers
                 Price = i.Price,
                 Stock = i.Stock,
                 IsApproved = i.IsApproved,
-                CategoryId = i.CategoryId
+                CategoryId = i.CategoryId,
+                Photo = i.Photo,
             });
 
             return Json(products);
@@ -139,7 +141,7 @@ namespace EShopperMVC.Controllers
             });
             
             //string returnUrl = "/Index";
-            return Json(new { redirectToUrl = Url.Action("Index", "Category"), categoryInfos });
+            return Json(new { redirectToUrl = Url.Action("Index"), categoryInfos });
         }
     }
 }
