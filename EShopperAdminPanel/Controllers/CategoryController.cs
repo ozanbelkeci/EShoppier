@@ -22,6 +22,7 @@ namespace EShopperAdminPanel.Controllers
                 Id = i.Id,
                 Name = i.Name,
                 Description = i.Description,
+                MainCategoryId = i.MainCategoryId,
                 Line = i.Line,
             }
             ).ToList();
@@ -41,6 +42,7 @@ namespace EShopperAdminPanel.Controllers
                 Id = i.Id,
                 Name = i.Name,
                 Description = i.Description,
+                MainCategoryId= i.MainCategoryId,
                 Line = i.Line,
             }
             ).ToList();

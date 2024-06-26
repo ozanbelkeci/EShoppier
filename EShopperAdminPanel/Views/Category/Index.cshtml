@@ -2,6 +2,8 @@
 @{
     var mainCategories = Model.Where(x => x.MainCategoryId == 0).ToList();
 }
+<script src="~/assets/pages-js/"></script>
+
 <h2>Kategoriler</h2>
 <br />
 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">Yeni Kategori Ekle</button>
@@ -23,7 +25,15 @@
                 <td class="d-none">@item.Id</td>
                 <td>@item.Name</td>
                 <td>@item.Description</td>
-                <td>@item.MainCategoryId</td>
+                @* <td>@item.MainCategoryId</td> *@
+                @if (item.MainCategoryId != 0)
+                {
+                    <td><span class="badge rounded-pill bg-primary">@Model.FirstOrDefault(x => x.Id == item.MainCategoryId).Name</span></td>
+                }
+                else
+                {
+                    <td><span class="badge rounded-pill bg-success">Ana Kategori</span></td>
+                }
                 <td>@item.Line</td>
                 <td>
                     <div class="dropdown">
@@ -72,7 +82,7 @@
                     <div class="input-group mb-3">
                         <label for="recipient-name" class="col-form-label">Alt Kategori:</label>
                         <label class="m-1 ms-3 toggler-wrapper style-1">
-                            <input id="upSubCatCheck" onchange="subCatCheckToggle()" type="checkbox">
+                            <input id="upSubCatCheck" onchange="subCatCheckToggle('update')" type="checkbox">
                             <div class="toggler-slider">
                                 <div class="toggler-knob"></div>
                             </div>
@@ -123,7 +133,7 @@
                     <div class="input-group mb-3">
                         <label for="recipient-name" class="col-form-label">Alt Kategori:</label>
                         <label class="m-1 ms-3 toggler-wrapper style-1">
-                            <input id="subCatCheck" onchange="subCatCheckToggle()" type="checkbox">
+                            <input id="subCatCheck" onchange="subCatCheckToggle('add')" type="checkbox">
                             <div class="toggler-slider">
                                 <div class="toggler-knob"></div>
                             </div>
@@ -150,11 +160,38 @@
 </div>
 
 <script>
-    function subCatCheckToggle() {
-        if ($("#subCatCheck").is(":checked") == true)
-            $("#chooseMainCat").removeClass("d-none");
-        else
-            $("#chooseMainCat").addClass("d-none");
+    function deneme() {
+        $.ajax({
+            url: '@Url.Action("Deneme", "Product")',
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                if (data) {
+                    debugger
+                    console.log("@Url.Action("Deneme", "Product")")
+                }
+                else {
+                    
+                }
+            }
+        });
+    }
+    
+
+    function subCatCheckToggle(operation) {
+        if (operation === "add") {
+            if ($("#subCatCheck").is(":checked") == true)
+                $("#chooseMainCat").removeClass("d-none");
+            else
+                $("#chooseMainCat").addClass("d-none");
+        }
+        else if ("update") {
+            if ($("#upSubCatCheck").is(":checked") == true)
+                $("#upChooseMainCat").removeClass("d-none");
+            else
+                $("#upChooseMainCat").addClass("d-none");
+        }
+
     }
 
     function createCategory() {
@@ -285,6 +322,10 @@
         var id = $("#id").val();
         var name = $("#upCategoryName").val();
         var desc = $("#upDesc").val();
+        var line = parseInt($("#upLine").val());
+        var mainCategoryId = 0;
+        if ($("#upSubCatCheck").is(":checked") == true)
+            var mainCategoryId = parseInt($("#upMainCategoryId").val());
 
         $.ajax({
             url: '@Url.Action("UpdateCategory", "Category")',
@@ -293,7 +334,10 @@
             data: {
                 "_id": id,
                 "_categoryName": name,
-                "_desc": desc
+                "_desc": desc,
+                "_mainCategoryId": mainCategoryId,
+                "_line": line
+
             },
             success: function (data) {
                 if (data) {
@@ -334,9 +378,14 @@
                     var trHtml = "";
                     for(var item of data) {
                         trHtml += '<tr>';
-                        trHtml += '    <td class="d-none"> '+item.Id+'</td>';
+                        trHtml += '    <td class="d-none"> '+item.id+'</td>';
                         trHtml += '        <td> ' + item.name + '</td>'
                         trHtml += '        <td> ' + item.description + '</td>'
+                        if(item.mainCategoryId != 0)
+                            trHtml += '<td><span class="badge rounded-pill bg-primary">' + data.find(x => x.id === item.mainCategoryId).name + '</span></td>'
+                        else
+                            trHtml += '<td><span class="badge rounded-pill bg-success">Ana Kategori</span></td>'
+                        trHtml += '        <td> ' + item.line + '</td>'
                         trHtml += '        <td>'
                         trHtml += '        <div class="dropdown" >'
                         trHtml += '            <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">'

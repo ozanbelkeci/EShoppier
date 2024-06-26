@@ -221,5 +221,11 @@ namespace EShopperAdminPanel.Controllers
                 throw ex;
             }
         }
+
+        public JsonResult Deneme() {
+
+            return Json("test");
+                
+        }
     }
 }
