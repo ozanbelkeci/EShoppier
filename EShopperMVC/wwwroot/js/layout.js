@@ -1,8 +1,28 @@
 ﻿var navbarCategory = $("#navbar-cat");
+function createPage() {
 
+    $.post("/Home/redirectUri", function (data) {
+        alert(data);
+    });  
+    //debugger;
+    //const _urlName = { "viewName": "hakkimizda" };
+    //$.ajax({
+    //    url: 'https://localhost:44342/Home/CreateLandingPage',
+    //    type: 'POST',
+    //    dataType: 'json',
+    //    data: _urlName,
+    //    success: function (result) {
+    //        if (result.redirectToUrl !== undefined) {
+    //            window.location.replace(result.redirectToUrl);
+    //        } else {
+    //            // No redirect found, do something else
+    //        }
+    //    }
+    //});
+}
 $.ajax({
 /*    url: 'Home/Categories',*/
-    url: "../../Home/Categories",
+    url: "https://localhost:44342/Home/Categories",
     type: 'POST',
     dataType: 'json',
     success: function (data) {
@@ -22,7 +42,7 @@ $.ajax({
 
                     var categoryTitle = this.text;
                     $.ajax({
-                        url: 'Category/CategoryFind',
+                        url: 'https://localhost:44342/Category/CategoryFind',
                         type: 'POST',
                         dataType: 'json',
                         data: {categoryTitle :categoryTitle },

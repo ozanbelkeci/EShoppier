@@ -64,6 +64,12 @@ namespace EShopperMVC
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: "Home",
+                    pattern: "pages/{file}",
+                    new { controller = "Home", action = "HandleCshtml" });
+
+
+            endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
