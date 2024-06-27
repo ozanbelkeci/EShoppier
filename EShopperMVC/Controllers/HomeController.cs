@@ -1,11 +1,17 @@
 ﻿using DAL.Entity;
 using DAL.Operations;
 using EShopperMVC.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,7 +42,7 @@ namespace EShopperMVC.Controllers
         }
         public JsonResult Categories()
         {
-
+            Response.Cookies.Delete("Categories");
             GenericRepository<Category> repository = new GenericRepository<Category>();
 
             var categories = repository.GetList();
@@ -49,7 +55,18 @@ namespace EShopperMVC.Controllers
             }
             ).ToList();
 
-
+            CookieOptions option = new CookieOptions();
+            int expireTime = 20;
+            if (expireTime != 0)
+            {
+                option.Expires = DateTime.Now.AddMinutes(20);
+            }
+            else
+            {
+                option.Expires = DateTime.Now.AddMinutes(80);
+            }
+            string json = JsonConvert.SerializeObject(categoryModel);
+            Response.Cookies.Append("Categories", json.ToString(), option);
             return Json(categoryModel);
         }
         public ActionResult CategoryFind()
