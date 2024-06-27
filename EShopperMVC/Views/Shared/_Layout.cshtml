@@ -7,7 +7,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
-
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" type="text/javascript"></script>
     <!-- Favicon -->
     <link href="~/img/favicon.ico" rel="icon">
 
@@ -23,6 +23,7 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="~/css/style.css" rel="stylesheet">
+    
 </head>
 
 <body>
@@ -67,7 +68,7 @@
             <div class="col-lg-6 col-6 text-left">
                 <form action="">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products">
+                        <input type="text" class="form-control" placeholder="Arama">
                         <div class="input-group-append">
                             <span class="input-group-text bg-transparent text-primary">
                                 <i class="fa fa-search"></i>
@@ -152,14 +153,14 @@
                         </div>
                     </div>
                 </nav>
-                
-                @RenderBody();
+                <script src="~/js/layout.js" type="text/javascript"></script>
+
+                @RenderBody()
             </div>
         </div>
     </div>
     <!-- Navbar End -->
 
-    @RenderBody();
 
     <!-- Footer Start -->
     <div class="container-fluid bg-secondary text-dark mt-5 pt-5">
@@ -236,7 +237,7 @@
 
 
     <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/easing/easing.min.js"></script>
     <script src="~/lib/owlcarousel/owl.carousel.min.js"></script>
@@ -247,8 +248,6 @@
 
     <!-- Template Javascript -->
     <script src="~/js/main.js"></script>
-    <script src="~/js/layout.js"></script>
-
 </body>
 
 </html>
