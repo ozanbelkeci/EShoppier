@@ -10,9 +10,38 @@ namespace EShopperMVC.Controllers
 {
     public class ProductController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Index(int _productId)
         {
-            return View();
+            GenericRepository<Product> repository = new GenericRepository<Product>();
+
+            var AllProducts = repository.GetList();
+
+            List<ProductModel> productModel = AllProducts.Select(i => new ProductModel()
+            {
+                Id = i.Id,
+                Name = i.Name,
+                Description = i.Description,
+                Price = i.Price,
+                Stock = i.Stock,
+                IsApproved = i.IsApproved,
+                CategoryId = i.CategoryId,
+                Photo = i.Photo
+            }
+            ).ToList();
+
+            var productInfos = productModel.Where(x => x.Id == _productId).Select(i => new ProductModel()
+            {
+                Id = i.Id,
+                Name = i.Name,
+                Description = i.Description.ToString(),
+                Price = i.Price,
+                Stock = i.Stock,
+                IsApproved = i.IsApproved,
+                CategoryId = i.CategoryId,
+                Photo = i.Photo
+            });
+
+            return View(productInfos);
         }
         public JsonResult ProductDetail()
         {

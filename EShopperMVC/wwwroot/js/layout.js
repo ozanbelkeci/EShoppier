@@ -29,33 +29,17 @@ $.ajax({
         if (data) {
             console.log(data);
             for (var item of data) {
-                var element = '<a class="nav-item nav-link category">' + item.name + '</a>';
+                var element = `<a href="Category?_categoryId=${item.id}" class="nav-item nav-link category">${item.name}</a>`;
                 navbarCategory.append(element);
             }
-            const my_element = document.getElementsByClassName("category");
-            for (row of my_element) {
-                row.addEventListener("click", function (e) {
-                    console.log(this.text); // logs the className of my_element
-                    console.log(this.className); // logs the className of my_element
-                    console.log(e.currentTarget === this); // logs `true`
-
-
-                    var categoryTitle = this.text;
-                    $.ajax({
-                        url: 'https://localhost:44342/Category/CategoryFind',
-                        type: 'POST',
-                        dataType: 'json',
-                        data: {categoryTitle :categoryTitle },
-                        success: function (result) {
-                            if (result.redirectToUrl !== undefined) {
-                                window.location.replace(result.redirectToUrl + "/Index" + "?_categoryId=" + result.categoryInfos[0].id);
-                            } else {
-                                // No redirect found, do something else
-                            }
-                        }
-                    });
-                });
-            }
+            //const my_element = document.getElementsByClassName("category");
+            //for (row of my_element) {
+            //    row.addEventListener("click", function (e) {
+            //        console.log(this.text); // logs the className of my_element
+            //        console.log(this.className); // logs the className of my_element
+            //        console.log(e.currentTarget === this); // logs `true`
+            //    });
+            //}
         }
     }
 });

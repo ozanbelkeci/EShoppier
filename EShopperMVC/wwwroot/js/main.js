@@ -86,10 +86,16 @@
 
     // Product Quantity
     $('.quantity button').on('click', function () {
+        debugger;
         var button = $(this);
         var oldValue = button.parent().parent().find('input').val();
         if (button.hasClass('btn-plus')) {
-            var newVal = parseFloat(oldValue) + 1;
+            if (parseFloat(oldValue) < parseFloat($("#stock")[0].max))
+                var newVal = parseFloat(oldValue) + 1;
+            else {
+                button.parent().parent().find('input').val(oldValue);
+                return;
+            }
         } else {
             if (oldValue > 0) {
                 var newVal = parseFloat(oldValue) - 1;

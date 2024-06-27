@@ -1,5 +1,5 @@
 ﻿using DAL.Entity;
-using DAL.Models;
+using EShopperMVC.Models;
 using DAL.Operations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +15,36 @@ namespace EShopperMVC.Controllers
 
         public ActionResult Index(int _categoryId)
         {
-            return View();
+            GenericRepository<Product> repository = new GenericRepository<Product>();
+
+            var AllProducts = repository.GetList();
+
+            List<ProductModel> productModel = AllProducts.Select(i => new ProductModel()
+            {
+                Id = i.Id,
+                Name = i.Name,
+                Description = i.Description,
+                Price = i.Price,
+                Stock = i.Stock,
+                IsApproved = i.IsApproved,
+                CategoryId = i.CategoryId,
+                Photo = i.Photo,
+            }
+            ).ToList();
+
+            var products = productModel.Where(x => x.CategoryId == _categoryId).Select(i => new ProductModel()
+            {
+                Id = i.Id,
+                Name = i.Name,
+                Description = i.Description,
+                Price = i.Price,
+                Stock = i.Stock,
+                IsApproved = i.IsApproved,
+                CategoryId = i.CategoryId,
+                Photo = i.Photo,
+            });
+
+            return View(products);
         }
 
         public async Task<JsonResult> Products(int _categoryId)
