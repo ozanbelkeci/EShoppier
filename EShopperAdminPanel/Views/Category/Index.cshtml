@@ -6,7 +6,7 @@
 
 <h2>Kategoriler</h2>
 <br />
-<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">Yeni Kategori Ekle</button>
+<button type="button" class="btn btn-success" data-bs-toggle="modal" onclick="getCategories(1)" data-bs-target="#createModal">Yeni Kategori Ekle</button>
 <table class="table table-hover mt-3">
     <thead>
         <tr>
@@ -42,7 +42,7 @@
                         </button>
                         <div class="dropdown-menu">
                             <a onclick="getCategoryById(@item.Id)" data-bs-toggle="modal" data-bs-target="#updateModal" class="dropdown-item"><i class="bx bx-edit-alt me-1"></i> Güncelle</a>
-                            <a onclick="deleteCategory(@item.Id)" class="dropdown-item"><i class="bx bx-trash me-1"></i> Sil</a>
+                            <a onclick="deleteCategory(@item.Id, @item.MainCategoryId)" class="dropdown-item"><i class="bx bx-trash me-1"></i> Sil</a>
                         </div>
                     </div>
                 </td>
@@ -160,24 +160,6 @@
 </div>
 
 <script>
-    function deneme() {
-        $.ajax({
-            url: '@Url.Action("Deneme", "Product")',
-            type: 'POST',
-            dataType: 'json',
-            success: function (data) {
-                if (data) {
-                    debugger
-                    console.log("@Url.Action("Deneme", "Product")")
-                }
-                else {
-                    
-                }
-            }
-        });
-    }
-    
-
     function subCatCheckToggle(operation) {
         if (operation === "add") {
             if ($("#subCatCheck").is(":checked") == true)
@@ -241,9 +223,15 @@
         });
     }
 
-    function deleteCategory(_id) {
+    function deleteCategory(_id, _mainCategoryId) {
+        var text = "";
+        if (_mainCategoryId === 0)
+            text = "Seçtiğiniz kategori alt kategorileri ile beraber silinecektir. Onaylıyor musunuz?";
+        else
+            text = "Seçtiğiniz kategori silinecektir. Onaylıyor musunuz?";
+
         Swal.fire({
-            title: "Seçtiğiniz kategori silinecektir. Onaylıyor musunuz?",
+            title: text,
             text: "Bunu geri alamazsınız!",
             icon: "warning",
             showCancelButton: true,
@@ -258,7 +246,8 @@
                     type: 'POST',
                     dataType: 'json',
                     data: {
-                        "_id": _id
+                        "_id": _id,
+                        "_mainCategoryId": _mainCategoryId
                     },
                     success: function (data) {
                         if (data) {
@@ -301,6 +290,16 @@
                     $("#id").val(data.id);
                     $("#upCategoryName").val(data.name);
                     $("#upDesc").val(data.description);
+                    $("#upLine").val(data.line);
+                    if (data.mainCategoryId != 0) {
+                        $("#upSubCatCheck").prop("checked", true);
+                        getCategories(2, data.mainCategoryId);
+                        $("#upChooseMainCat").removeClass("d-none");
+                    }
+                    else {
+                        $("#upSubCatCheck").prop("checked", false);
+                        $("#upChooseMainCat").addClass("d-none");
+                    }
                 }
                 else {
                     $(function () {
@@ -317,6 +316,49 @@
             }
         });
     } 
+
+    function getCategories(val, mainCategoryId = null) {
+
+        $.ajax({
+            url: '@Url.Action("GetCategories", "Product")',
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                if (data) {
+                    if (val === 1) {
+                        $("#category").empty();
+                        var trHtml = "";
+                        for (var item of data) {
+                            trHtml += '<option value="' + item.id + '">' + item.name + '</option>';
+                        }
+                        $("#category").append(trHtml);
+                    }
+                    if (val === 2 && mainCategoryId !== null) {
+                        $("#upMainCategoryId").empty();
+                        var trHtml = "";
+                        for (var item of data) {
+                            if (item.id === mainCategoryId)
+                                trHtml += '<option selected value="' + item.id + '">' + item.name + '</option>';
+                            else
+                                trHtml += '<option value="' + item.id + '">' + item.name + '</option>';
+
+                        }
+                        $("#upMainCategoryId").append(trHtml);
+                    }
+                }
+                else {
+
+                    Swal.fire({
+                        title: "Hata!",
+                        text: "Bir şeyler ters gitti lütfen tekrar deneyiniz!",
+                        icon: "error"
+                    });
+
+                    return;
+                }
+            }
+        });
+    }
 
     function updateCategory() {
         var id = $("#id").val();
@@ -376,6 +418,8 @@
                 if (data) {
                     $("#categoryTableBody").empty();
                     var trHtml = "";
+                    var subSelectHtml = "";
+                    subSelectHtml += '<option selected>Alt kategori seçiniz</option>';
                     for(var item of data) {
                         trHtml += '<tr>';
                         trHtml += '    <td class="d-none"> '+item.id+'</td>';
@@ -393,13 +437,25 @@
                         trHtml += '            </button>'
                         trHtml += '            <div class="dropdown-menu">'
                         trHtml += '                 <a onclick="getCategoryById(' + item.id+ ')" data-bs-toggle="modal" data-bs-target="#updateModal" class="dropdown-item" > <i class="bx bx-edit-alt me-1"> </i>Edit</a>'
-                        trHtml += '                 <a onclick="deleteCategory(' + item.id + ')" class="dropdown-item" > <i class="bx bx-trash me-1" > </i> Delete</a>'
+                        trHtml += '                 <a onclick="deleteCategory(' + item.id + ', '+ item.mainCategoryId +')" class="dropdown-item" > <i class="bx bx-trash me-1" > </i> Delete</a>'
                         trHtml += '            </div>'
                         trHtml += '        </div>'
                         trHtml += '     </td>'
                         trHtml += '</tr>';
+
+                        $("#mainCategoryId").empty();
+                        $("#upMainCategoryId").empty();
+                        if(item.mainCategoryId == 0)
+                            subSelectHtml += '<option value="'+item.id+'">'+item.name+'</option>';
+                        
+
                     }
                     $("#categoryTableBody").append(trHtml);
+                    $("#mainCategoryId").append(subSelectHtml);
+                    $("#upMainCategoryId").append(subSelectHtml);
+
+                    
+
                 }
                 else {
                     Swal.fire({

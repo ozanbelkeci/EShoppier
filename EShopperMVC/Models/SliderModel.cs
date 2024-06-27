@@ -1,4 +1,4 @@
-﻿namespace EShopperAdminPanel.Models
+﻿namespace EShopperMVC.Models
 {
     public class SliderModel
     {

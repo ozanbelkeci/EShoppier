@@ -130,13 +130,20 @@ namespace EShopperAdminPanel.Controllers
             }
         }
 
-        public JsonResult DeleteCategory(int _id)
+        public JsonResult DeleteCategory(int _id, int _mainCategoryId)
         {
             try
             {
                 GenericRepository<Category> repository = new GenericRepository<Category>();
-                var result = repository.Delete(_id);
+                if (_mainCategoryId == 0)
+                {
+                    var categoryList = repository.GetList();
+                    var subCategories = categoryList.Where(x => x.MainCategoryId == _id).ToList();
+                    foreach (var subCategory in subCategories)
+                        repository.Delete(subCategory.Id);
+                }
 
+                var result = repository.Delete(_id);
                 return Json(result);
             }
             catch (Exception ex)
