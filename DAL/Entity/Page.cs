@@ -12,6 +12,5 @@ namespace DAL.Entity
         public string Description { get; set; }
 
         public string PageHtml { get; set; }
-        public int Test { get; set; }
     }
 }
