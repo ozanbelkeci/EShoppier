@@ -160,3 +160,5 @@ _NCrunch*
 
 /EShoppier/DAL/Migrations/
 /DAL/Migrations/DataContextModelSnapshot.cs
+/DAL/Migrations/20240628115029_mig_1.cs
+/DAL/Migrations/20240628115029_mig_1.Designer.cs
