@@ -1,9 +1,11 @@
 ﻿using DAL.Entity;
 using DAL.Operations;
 using EShopperAdminPanel.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace EShopperAdminPanel.Controllers
@@ -27,12 +29,22 @@ namespace EShopperAdminPanel.Controllers
             return View(sliderModel);
         }
 
-        public JsonResult CreateSlider(string _sliderName)
+        public JsonResult CreateSlider(string _sliderName, IFormFile _sliderPhoto)
         {
             try
             {
                 var slider = new Slider();
                 slider.Name = _sliderName;
+
+                if (_sliderPhoto != null)
+                {
+                    var extension = Path.GetExtension(_sliderPhoto.FileName);
+                    var newImageName = Guid.NewGuid() + extension;
+                    var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/sliderPhotos/", newImageName);
+                    var stream = new FileStream(location, FileMode.Create);
+                    _sliderPhoto.CopyTo(stream);
+                    slider.Photo = newImageName;
+                }
 
                 GenericRepository<Slider> repository = new GenericRepository<Slider>();
                 var result = repository.Create(slider);
@@ -40,7 +52,8 @@ namespace EShopperAdminPanel.Controllers
                 var sliderModel = new SliderModel()
                 {
                     Id = result.Id,
-                    Name = result.Name
+                    Name = result.Name,
+                    Photo = result.Photo
                 };
 
                 return Json(sliderModel);
@@ -51,7 +64,7 @@ namespace EShopperAdminPanel.Controllers
             }
         }
 
-        public JsonResult UpdateSlider(int _id, string _sliderName)
+        public JsonResult UpdateSlider(int _id, string _sliderName, IFormFile _sliderPhoto)
         {
             try
             {
@@ -59,13 +72,24 @@ namespace EShopperAdminPanel.Controllers
                 slider.Id = _id;
                 slider.Name = _sliderName;
 
+                if (_sliderPhoto != null)
+                {
+                    var extension = Path.GetExtension(_sliderPhoto.FileName);
+                    var newImageName = Guid.NewGuid() + extension;
+                    var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/sliderPhotos/", newImageName);
+                    var stream = new FileStream(location, FileMode.Create);
+                    _sliderPhoto.CopyTo(stream);
+                    slider.Photo = newImageName;
+                }
+
                 GenericRepository<Slider> repository = new GenericRepository<Slider>();
                 var result = repository.Update(slider);
 
                 var sliderModel = new SliderModel()
                 {
                     Id = result.Id,
-                    Name = result.Name
+                    Name = result.Name,
+                    Photo= result.Photo
                 };
 
 
@@ -93,6 +117,20 @@ namespace EShopperAdminPanel.Controllers
             }
         }
 
+        public JsonResult GetSliderById(int _id)
+        {
+            try
+            {
+                GenericRepository<Slider> repository = new GenericRepository<Slider>();
+                var result = repository.GetItemById(_id);
 
+                return Json(result);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
     }
 }
