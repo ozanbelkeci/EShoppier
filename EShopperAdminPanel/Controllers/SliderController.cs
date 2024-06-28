@@ -21,7 +21,8 @@ namespace EShopperAdminPanel.Controllers
             List<SliderModel> sliderModel = sliders.Select(i => new SliderModel()
             {
                 Id = i.Id,
-                Name = i.Name
+                Name = i.Name,
+                Photo = i.Photo
             }
             ).ToList();
 
