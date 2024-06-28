@@ -43,6 +43,27 @@ namespace DAL.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("DAL.Entity.Page", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PageHtml")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pages");
+                });
+
             modelBuilder.Entity("DAL.Entity.Product", b =>
                 {
                     b.Property<int>("Id")

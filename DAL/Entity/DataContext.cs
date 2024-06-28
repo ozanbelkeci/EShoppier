@@ -32,5 +32,6 @@ namespace DAL.Entity
         public DbSet<User> Users { get; set; }
         public DbSet<Slider> Sliders { get; set; }
         public DbSet<ProductComment> ProductComments { get; set; }
+        public DbSet<Page> Pages { get; set; }
     }
 }
