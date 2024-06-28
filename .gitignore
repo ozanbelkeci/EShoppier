@@ -159,3 +159,4 @@ _NCrunch*
 /.vs/ProjectEvaluation/eshopper.metadata.v5.2
 
 /EShoppier/DAL/Migrations/
+/DAL/Migrations/DataContextModelSnapshot.cs
