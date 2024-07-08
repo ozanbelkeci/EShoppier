@@ -148,7 +148,7 @@ namespace EShopperAdminPanel.Controllers
             }
             catch (Exception ex)
             {
-
+                
                 throw ex;
             }
         }

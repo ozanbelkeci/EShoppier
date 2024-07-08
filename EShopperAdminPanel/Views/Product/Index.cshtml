@@ -51,51 +51,57 @@
 
 <!-- Update Modal -->
 <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="updateModalLabel">Ürün</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img src="" id="upPhoto" class="rounded mx-auto d-block" alt="" width="200" height="200">
                 <form>
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Ürün Adı</label>
-                        <input type="text" class="form-control" id="upProductName">
-                    </div>
-                    <div class="mb-3">
-                        <label for="message-text" class="col-form-label">Açıklama</label>
-                        <textarea class="form-control" id="upDesc"></textarea>
-                    </div>
-                    <div class="input-group mb-3">
-                        <label for="message-text" class="col-form-label">Fiyat</label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">₺</span>
-                            <input type="number" id="upPrice" class="form-control" aria-label="Amount (to the nearest dollar)">
+                    <div class="row">
+                        <div class="col">
+                            <img src="" id="upPhoto" class="rounded mx-auto d-block" alt="" width="350" height="800">
                         </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Stok Adedi</label>
-                        <input type="number" class="form-control" id="upStock" oninput="this.value = Math.round(this.value);">
-                    </div>
-                    <div class="input-group mb-3">
-                        <label for="recipient-name" class="col-form-label">Satış Durumu</label>
-                        <label class="m-1 ms-3 toggler-wrapper style-1">
-                            <input id="upIsApproved" type="checkbox">
-                            <div class="toggler-slider">
-                                <div class="toggler-knob"></div>
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Ürün Adı</label>
+                                <input type="text" class="form-control" id="upProductName">
                             </div>
-                        </label>
-                    </div>
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Fotoğraf</label>
-                        <input type="file" class="form-control" id="upProductPhoto" aria-describedby="inputGroupFileAddon03" aria-label="Upload" accept="image/*">
-                    </div>
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Kategori Adı</label>
-                        <select class="form-select" id="upCategory">
-                        </select>
+                            <div class="mb-3">
+                                <label for="message-text" class="col-form-label">Açıklama</label>
+                                <textarea class="form-control" id="upDesc"></textarea>
+                            </div>
+                            <div class="input-group mb-3">
+                                <label for="message-text" class="col-form-label">Fiyat</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">₺</span>
+                                    <input type="number" id="upPrice" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Stok Adedi</label>
+                                <input type="number" class="form-control" id="upStock" oninput="this.value = Math.round(this.value);">
+                            </div>
+                            <div class="input-group mb-3">
+                                <label for="recipient-name" class="col-form-label">Satış Durumu</label>
+                                <label class="m-1 ms-3 toggler-wrapper style-1">
+                                    <input id="upIsApproved" type="checkbox">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Fotoğraf</label>
+                                <input type="file" class="form-control" id="upProductPhoto" aria-describedby="inputGroupFileAddon03" aria-label="Upload" accept="image/*">
+                            </div>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Kategori Adı</label>
+                                <select class="form-select" id="upCategory">
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
