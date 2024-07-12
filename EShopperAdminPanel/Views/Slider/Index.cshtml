@@ -160,7 +160,6 @@
                     $("#carouselInner").empty();
                     $("#carouselIndicators").empty();
                     for(var i = 0; i < data.length; i++) {
-                        debugger
                         if (i === 0) {
                             htmlTag += '<div class="carousel-item active"><img src="/sliderPhotos/' + data[i].photo + '" height="500" class="d-block w-100" alt="..."></div>';
                             htmlSliderBtn += '<button type="button" data-bs-target="#carouselSlider" data-bs-slide-to="' + i.toString() + '" class="active" aria-current="true" aria-label="Slide ' + i.toString() + '"></button>';
@@ -210,7 +209,6 @@
             processData: false,
             success: function (data) {
                 if (data) {
-                    debugger
                     $(function () {
                         $('#addModal').modal('toggle');
                     });
@@ -239,7 +237,6 @@
 
     function updateSlider() {
         var doc = $("#upSliderPhoto");
-        debugger
         var id = $("#id").val();
         var sliderName = $("#upSliderName").val();
         var oldPhoto = $("#oldPhoto").val();
@@ -376,7 +373,6 @@
                 if (data) {
                     $("#sliderTableBody").empty();
                     var trHtml = "";
-                    debugger
                     for (var item of data) {
                         trHtml += '<tr>';
                         trHtml += '    <td class="d-none"> ' + item.id + '</td>';

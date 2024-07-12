@@ -2,6 +2,24 @@
 @{
 }
 
+<head>
+    <!-- Main Quill library -->
+    <script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.js"></script>
+
+    <!-- Theme included stylesheets -->
+    <link href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.snow.css"
+          rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.bubble.css"
+          rel="stylesheet" />
+
+    <!-- Core build with no theme, formatting, non-essential modules -->
+    <link href="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.core.css"
+          rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.core.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+</head>
+
 <h2>Ürünler</h2>
 <br />
 <button type="button" class="btn btn-success" data-bs-toggle="modal" onclick="getCategories(1)" data-bs-target="#createModal">Yeni Ürün Ekle</button>
@@ -60,10 +78,11 @@
             <div class="modal-body">
                 <form>
                     <div class="row">
-                        <div class="col">
-                            <img src="" id="upPhoto" class="rounded mx-auto d-block" alt="" width="350" height="800">
-                        </div>
-                        <div class="col">
+                        <div class="col-4">
+                            <div class="mb-3 d-none">
+                                <label for="recipient-name" class="col-form-label">Fotoğraf:</label>
+                                <input type="text" class="form-control" id="oldPhoto">
+                            </div>
                             <div class="mb-3">
                                 <label for="recipient-name" class="col-form-label">Ürün Adı</label>
                                 <input type="text" class="form-control" id="upProductName">
@@ -102,6 +121,13 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-8">
+                            <img src="" id="upPhoto" class="rounded mx-auto d-block" alt="" width="200" height="auto">
+                            <label for="recipient-name" class="col-form-label">İkinci Açıklama Alanı</label>
+                            <div id="upEditor" style="height: 33%;">
+                                <p>Açıklama alanı</p>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -116,7 +142,7 @@
 
 <!-- Create Modal -->
 <div class="modal" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="createModalLabel">Ürün</h5>
@@ -124,46 +150,56 @@
             </div>
             <div class="modal-body">
                 <form>
-                    <div class="mb-3 d-none">
-                        <label for="recipient-name" class="col-form-label">ID:</label>
-                        <input type="text" class="form-control" id="id">
-                    </div>
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Ürün Adı</label>
-                        <input type="text" class="form-control" id="productName">
-                    </div>
-                    <div class="mb-3">
-                        <label for="message-text" class="col-form-label">Açıklama</label>
-                        <textarea class="form-control" id="desc"></textarea>
-                    </div>
-                    <div class="input-group mb-3">
-                        <label for="message-text" class="col-form-label">Fiyat</label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text">₺</span>
-                            <input type="number" id="price" class="form-control" aria-label="Amount (to the nearest dollar)">
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Stok Adedi</label>
-                        <input type="number" class="form-control" id="stock" oninput="this.value = Math.round(this.value);">
-                    </div>
-                    <div class="input-group mb-3">
-                        <label for="recipient-name" class="col-form-label">Satış Durumu</label>
-                        <label class="m-1 ms-3 toggler-wrapper style-1">
-                            <input id="isApproved" type="checkbox">
-                            <div class="toggler-slider">
-                                <div class="toggler-knob"></div>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="mb-3 d-none">
+                                <label for="recipient-name" class="col-form-label">ID:</label>
+                                <input type="text" class="form-control" id="id">
                             </div>
-                        </label>
-                    </div>
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Fotoğraf</label>
-                        <input type="file" class="form-control" id="productPhoto" aria-describedby="inputGroupFileAddon03" aria-label="Upload" accept="image/*">
-                    </div>
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">Kategori Adı</label>
-                        <select class="form-select" id="category">
-                        </select>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Ürün Adı</label>
+                                <input type="text" class="form-control" id="productName">
+                            </div>
+                            <div class="mb-3">
+                                <label for="message-text" class="col-form-label">Açıklama</label>
+                                <textarea class="form-control" id="desc"></textarea>
+                            </div>
+                            <div class="input-group mb-3">
+                                <label for="message-text" class="col-form-label">Fiyat</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">₺</span>
+                                    <input type="number" id="price" class="form-control" aria-label="Amount (to the nearest dollar)">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Stok Adedi</label>
+                                <input type="number" class="form-control" id="stock" oninput="this.value = Math.round(this.value);">
+                            </div>
+                            <div class="input-group mb-3">
+                                <label for="recipient-name" class="col-form-label">Satış Durumu</label>
+                                <label class="m-1 ms-3 toggler-wrapper style-1">
+                                    <input id="isApproved" type="checkbox">
+                                    <div class="toggler-slider">
+                                        <div class="toggler-knob"></div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Fotoğraf</label>
+                                <input type="file" class="form-control" id="productPhoto" aria-describedby="inputGroupFileAddon03" aria-label="Upload" accept="image/*">
+                            </div>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Kategori Adı</label>
+                                <select class="form-select" id="category">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-8">
+                            <label for="recipient-name" class="col-form-label">İkinci Açıklama Alanı</label>
+                            <div id="editor" style="height: 80%">
+                                <p>Açıklama alanı</p>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -177,6 +213,35 @@
 
 
 <script>
+    const toolbarOptions = [
+        ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+        ['blockquote', 'code-block'],
+        ['link', 'image', 'video', 'formula'],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }, { 'list': 'check' }],
+
+        [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+        [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+        [{ 'font': [] }],
+        [{ 'align': [] }],
+    ];
+
+    const quill = new Quill("#editor", {
+        theme: "snow",
+        height: "100%",
+        modules: {
+            toolbar: toolbarOptions 
+        }
+    });
+
+    const upQuill = new Quill("#upEditor", {
+        theme: "snow",
+        height: "100%",
+        modules: {
+            toolbar: toolbarOptions
+        }
+    });
 
     function createProduct() {
         var doc = $("#productPhoto");
@@ -187,6 +252,7 @@
         var isApproved = $('#isApproved').is(":checked");
         var productPhoto = doc[0].files[0];
         var category = parseInt($("#category").val());
+        var secDesc = quill.root.innerHTML;
 
         var formData = new FormData();
         formData.append("_name", productName);
@@ -196,6 +262,7 @@
         formData.append("_isApproved", isApproved);
         formData.append("_photo", productPhoto);
         formData.append("_categoryId", category);
+        formData.append("_secDesc", secDesc);
 
         $.ajax({
             url: '@Url.Action("CreateProduct", "Product")',
@@ -388,6 +455,8 @@
                     $("#upDesc").val(data.description);
                     $("#upPrice").val(data.price);
                     $("#upStock").val(data.stock);
+                    $("#oldPhoto").val(data.photo);
+                    upQuill.root.innerHTML = data.descriptionSecond;
                     if (data.isApproved)
                         $("#upIsApproved").prop("checked", true);
                     else
@@ -413,15 +482,16 @@
 
     function updateProduct() {
         var doc = $("#upProductPhoto");
-
         var id = $("#id").val();
         var productName = $("#upProductName").val();
         var desc = $("#upDesc").val();
         var price = $("#upPrice").val();
         var stock = $("#upStock").val();
+        var oldPhoto = $("#oldPhoto").val();
         var isApproved = $("#upIsApproved").is(":checked");
         var productPhoto = doc[0].files[0];
         var category = parseInt($("#upCategory").val());
+        var secDesc = upQuill.root.innerHTML;
 
         var formData = new FormData();
         formData.append("_id", id);
@@ -432,6 +502,8 @@
         formData.append("_isApproved", isApproved);
         formData.append("_photo", productPhoto);
         formData.append("_categoryId", category);
+        formData.append("_secDesc", secDesc);
+        formData.append("_oldPhotoName", oldPhoto);
 
         $.ajax({
             url: '@Url.Action("UpdateProduct", "Product")',

@@ -97,7 +97,7 @@ namespace EShopperAdminPanel.Controllers
             }
         }
 
-        public JsonResult CreateProduct(string _name, string _desc, string _price, int _stock, bool _isApproved, IFormFile _photo, int _categoryId)
+        public JsonResult CreateProduct(string _name, string _desc, string _price, int _stock, bool _isApproved, IFormFile _photo, int _categoryId, string _secDesc)
         {
             try
             {
@@ -119,6 +119,7 @@ namespace EShopperAdminPanel.Controllers
                 product.IsApproved = _isApproved;
                 product.Stock = _stock;
                 product.CategoryId = _categoryId;
+                product.DescriptionSecond = _secDesc;
 
                 GenericRepository<Product> repository = new GenericRepository<Product>();
                 var result = repository.Create(product);
@@ -133,6 +134,7 @@ namespace EShopperAdminPanel.Controllers
                     IsApproved= result.IsApproved,
                     Photo= result.Photo,
                     Stock= result.Stock,
+                    DescriptionSecond= result.DescriptionSecond,
                 };
 
                 return Json(productModel);
@@ -143,7 +145,7 @@ namespace EShopperAdminPanel.Controllers
             }
         }
 
-        public JsonResult UpdateProduct(int _id, string _name, string _desc, string _price, int _stock, bool _isApproved, IFormFile _photo, int _categoryId)
+        public JsonResult UpdateProduct(int _id, string _name, string _desc, string _price, int _stock, bool _isApproved, IFormFile _photo, int _categoryId, string _secDesc, string _oldPhotoName = null)
         {
             try
             {
@@ -158,6 +160,8 @@ namespace EShopperAdminPanel.Controllers
                     _photo.CopyTo(stream);
                     product.Photo = newImageName;
                 }
+                else
+                    product.Photo = _oldPhotoName;
 
                 product.Id= _id;
                 product.Name = _name;
@@ -166,6 +170,7 @@ namespace EShopperAdminPanel.Controllers
                 product.IsApproved = _isApproved;
                 product.Stock = _stock;
                 product.CategoryId = _categoryId;
+                product.DescriptionSecond = _secDesc;
 
                 GenericRepository<Product> repository = new GenericRepository<Product>();
                 var result = repository.Update(product);
@@ -180,6 +185,7 @@ namespace EShopperAdminPanel.Controllers
                     IsApproved = result.IsApproved,
                     Photo = result.Photo,
                     Stock = result.Stock,
+                    DescriptionSecond = result.DescriptionSecond,
                 };
 
                 return Json(productModel);

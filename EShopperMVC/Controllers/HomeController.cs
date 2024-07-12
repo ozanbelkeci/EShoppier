@@ -78,27 +78,8 @@ namespace EShopperMVC.Controllers
         public IActionResult CreateLandingPage(string viewName)
         {
             var cshtmlcontent = @"@{Layout = ""~/Views/Shared/_Layout.cshtml"";ViewData[""Title""] = ""Page Title"";}
-            <table class=""table table table-bordered"">
-                <thead>
-                    <tr>
-                        <th>Book Id
-                        <th>Title
-                        <th>Description
-                        <th>Author Name
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@item.Id</td>
-                            <td>@item.Title</td>
-                            <td>@item.Description</td>
-                            <td>@item.Author?.Name</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>";
+                                    <div id=""pageBody""></div>
+                                 ";
             System.IO.File.WriteAllText(@"EShoppier\EShopperMVC\Views\Home\"+viewName+".cshtml", cshtmlcontent);
             return Json(new { redirectToUrl = Url.Action(viewName) });
         }
